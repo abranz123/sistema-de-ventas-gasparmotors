@@ -1,0 +1,4 @@
+.idea/
+*.log
+/sistema/target/
+/sistema/.mvn/wrapper/maven-wrapper.jar

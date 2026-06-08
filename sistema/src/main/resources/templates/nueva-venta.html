@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nueva Venta | Gaspar Motors</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        body { background-color: #f3f4f6; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; display: flex; }
+
+        /* SIDEBAR COMPARTIDO */
+        .sidebar { width: 260px; background-color: #1e3a8a; height: 100vh; position: fixed; display: flex; flex-direction: column; color: white; box-shadow: 4px 0 10px rgba(0,0,0,0.1); }
+        .sidebar-brand { padding: 20px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .logo-gm { background: white; color: #1e3a8a; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 18px; }
+        .nav-menu { padding: 20px 0; display: flex; flex-direction: column; gap: 5px; }
+        .nav-link { color: rgba(255,255,255,0.8); padding: 12px 24px; margin: 0 15px; border-radius: 8px; display: flex; align-items: center; gap: 15px; font-weight: 500; text-decoration: none; transition: 0.3s; }
+        .nav-link:hover, .nav-link.active { background-color: white; color: #1e3a8a; font-weight: 600; }
+        .user-panel { margin-top: auto; padding: 20px; background-color: #1e40af; }
+        .btn-logout { background-color: #dc2626; color: white; width: 100%; border: none; padding: 10px; border-radius: 8px; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 10px; }
+
+        /* CONTENIDO PRINCIPAL */
+        .main-content { margin-left: 260px; padding: 30px; width: calc(100% - 260px); }
+
+        /* Tarjetas estilo Figma */
+        .card-panel { background: white; border-radius: 8px; padding: 20px; margin-bottom: 20px; border: 1px solid #e5e7eb; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+        .section-title { font-size: 1rem; font-weight: bold; color: #1f2937; margin-bottom: 15px; }
+        .form-label { font-size: 0.8rem; font-weight: 600; color: #4b5563; }
+
+        /* Botones y Tabla */
+        .btn-add { background-color: #2563eb; color: white; font-weight: 500; }
+        .btn-add:hover { background-color: #1d4ed8; color: white; }
+        .btn-emit { background-color: #10b981; color: white; font-weight: bold; font-size: 1.1rem; padding: 10px 30px; }
+        .table-custom th { background-color: #f9fafb; font-size: 0.8rem; color: #6b7280; font-weight: 600; text-transform: uppercase; }
+        .total-text { font-size: 1.8rem; font-weight: bold; color: #111827; }
+        .total-amount { color: #10b981; }
+    </style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+    <div class="sidebar-brand">
+        <div class="logo-gm">GM</div>
+        <div>
+            <div class="fw-bold" style="font-size: 1.1rem;">Gaspar Motors</div>
+            <div style="font-size: 0.75rem; color: rgba(255,255,255,0.7);">Sistema de Ventas</div>
+        </div>
+    </div>
+    <div class="nav-menu">
+        <a href="/inicio" class="nav-link"><i class="fa-solid fa-house"></i> Inicio</a>
+        <a href="/ventas/nueva" class="nav-link active"><i class="fa-solid fa-cart-shopping"></i> Nueva Venta</a>
+        <a href="/inventario" class="nav-link"><i class="fa-solid fa-box-open"></i> Inventario</a>
+        <a href="/clientes" class="nav-link"><i class="fa-solid fa-users"></i> Clientes</a>
+        <a href="/personal" class="nav-link"><i class="fa-solid fa-user-tie"></i> Personal</a>
+    </div>
+    <div class="user-panel">
+        <div class="d-flex align-items-center gap-2 mb-3">
+            <i class="fa-solid fa-circle-user fs-3 text-white"></i>
+            <div>
+                <div class="fw-bold fs-6">Juan Gaspar</div>
+                <div style="font-size: 0.75rem; color: rgba(255,255,255,0.7);">Rol: Administrador</div>
+            </div>
+        </div>
+        <a href="/login" class="btn-logout text-decoration-none"><i class="fa-solid fa-arrow-right-from-bracket"></i> Cerrar Sesión</a>
+    </div>
+</div>
+
+<!-- CONTENIDO CENTRAL -->
+<div class="main-content">
+    <h4 class="fw-bold text-dark mb-4"><i class="fa-solid fa-cart-shopping text-secondary me-2"></i> Módulo de Nueva Venta</h4>
+
+    <!-- 1. Información del Cliente -->
+    <div class="card-panel border-top border-3 border-secondary" style="border-top-color: #d8b4fe !important;">
+        <div class="section-title">Información del Cliente</div>
+        <div class="row g-3">
+            <div class="col-md-4">
+                <label class="form-label">DNI del Cliente</label>
+                <div class="input-group">
+                    <span class="input-group-text bg-light"><i class="fa-solid fa-magnifying-glass"></i></span>
+                    <!-- AQUÍ ESTÁ EL PRIMER CAMBIO: id="dniVenta" -->
+                    <input type="text" id="dniVenta" class="form-control" placeholder="Ingrese DNI y presione Enter o Tab">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Nombre</label>
+                <!-- AQUÍ ESTÁ EL SEGUNDO CAMBIO: id="nombreVenta" -->
+                <input type="text" id="nombreVenta" class="form-control bg-light" placeholder="Autocompletado" readonly>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Apellido</label>
+                <!-- AQUÍ ESTÁ EL TERCER CAMBIO: id="apellidoVenta" -->
+                <input type="text" id="apellidoVenta" class="form-control bg-light" placeholder="Autocompletado" readonly>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. Productos -->
+    <div class="card-panel border-top border-3 border-primary" style="border-top-color: #93c5fd !important;">
+        <div class="section-title">Productos</div>
+        <div class="row g-3 align-items-end mb-4">
+            <div class="col-md-8">
+                <label class="form-label">Buscar Repuesto o Motocicleta</label>
+                <select id="productoSelect" class="form-select">
+                    <option value="">-- Seleccione un producto --</option>
+                    <!-- Cargado desde MySQL -->
+                    <option th:each="p : ${productos}"
+                            th:value="${p.precio}"
+                            th:text="${p.nombre_producto} + ' (S/ ' + ${p.precio} + ')'"
+                            th:data-nombre="${p.nombre_producto}">
+                    </option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label class="form-label">Cantidad</label>
+                <input type="number" id="cantidadInput" class="form-control" value="1" min="1">
+            </div>
+            <div class="col-md-2">
+                <button type="button" class="btn btn-add w-100" onclick="agregarAlCarrito()">
+                    <i class="fa-solid fa-plus"></i> Agregar al Carrito
+                </button>
+            </div>
+        </div>
+
+        <!-- Tabla del Carrito -->
+        <table class="table table-custom">
+            <thead>
+            <tr>
+                <th>Producto</th>
+                <th class="text-center">Cantidad</th>
+                <th class="text-end">Precio Unit.</th>
+                <th class="text-end">Subtotal</th>
+                <th class="text-center">Acciones</th>
+            </tr>
+            </thead>
+            <tbody id="tablaCarrito">
+            <tr id="filaVacia">
+                <td colspan="5" class="text-center text-muted py-4">No hay productos agregados</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- 3. Footer (Totales y Botón) -->
+    <div class="card-panel d-flex justify-content-between align-items-center">
+        <div class="total-text">TOTAL: <span class="total-amount" id="montoTotal">S/ 0.00</span></div>
+        <button class="btn btn-emit rounded-3"><i class="fa-solid fa-file-invoice me-2"></i> EMITIR COMPROBANTE</button>
+    </div>
+</div>
+
+<!-- SCRIPT MÁGICO PARA EL CARRITO Y AUTOCOMPLETADO DNI -->
+<script>
+    // ==========================================
+    // LÓGICA DE AUTOCOMPLETADO DE DNI
+    // ==========================================
+    document.getElementById("dniVenta").addEventListener("blur", function() {
+        let dniBuscado = this.value;
+
+        // Limpiamos las cajas por si escribe un DNI nuevo
+        document.getElementById("nombreVenta").value = "";
+        document.getElementById("apellidoVenta").value = "";
+
+        if(dniBuscado.trim() !== "") {
+            fetch('/api/clientes/dni/' + dniBuscado)
+                .then(response => {
+                    if(!response.ok) throw new Error("No encontrado");
+                    return response.json();
+                })
+                .then(cliente => {
+                    if(cliente) {
+                        // Llenamos las cajas con los datos de MySQL
+                        // OJO: Si tu clase de Java tiene otro nombre para las variables, cámbialo aquí
+                        document.getElementById("nombreVenta").value = cliente.nombre || "";
+                        document.getElementById("apellidoVenta").value = cliente.apellido || "";
+                    }
+                })
+                .catch(error => {
+                    console.log("Cliente no registrado en BD");
+                });
+        }
+    });
+
+    // ==========================================
+    // LÓGICA DEL CARRITO DE COMPRAS
+    // ==========================================
+    let totalVenta = 0;
+
+    function agregarAlCarrito() {
+        const select = document.getElementById("productoSelect");
+        const cantidad = parseInt(document.getElementById("cantidadInput").value);
+
+        if(select.value === "") {
+            alert("Por favor seleccione un producto.");
+            return;
+        }
+
+        const opcionSeleccionada = select.options[select.selectedIndex];
+        const nombre = opcionSeleccionada.getAttribute("data-nombre");
+        const precio = parseFloat(select.value);
+        const subtotal = precio * cantidad;
+
+        // Quitar el mensaje de "No hay productos"
+        const filaVacia = document.getElementById("filaVacia");
+        if (filaVacia) filaVacia.remove();
+
+        // Dibujar la fila en la tabla
+        const tbody = document.getElementById("tablaCarrito");
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+                <td class="fw-medium text-dark">${nombre}</td>
+                <td class="text-center">${cantidad}</td>
+                <td class="text-end">S/ ${precio.toFixed(2)}</td>
+                <td class="text-end fw-bold text-dark">S/ ${subtotal.toFixed(2)}</td>
+                <td class="text-center">
+                    <button class="btn btn-sm btn-outline-danger" onclick="eliminarFila(this, ${subtotal})"><i class="fa-solid fa-trash"></i></button>
+                </td>
+            `;
+        tbody.appendChild(tr);
+
+        // Actualizar Total
+        totalVenta += subtotal;
+        document.getElementById("montoTotal").innerText = `S/ ${totalVenta.toFixed(2)}`;
+
+        // Resetear inputs
+        select.value = "";
+        document.getElementById("cantidadInput").value = "1";
+    }
+
+    function eliminarFila(boton, subtotal) {
+        const fila = boton.parentNode.parentNode;
+        fila.remove();
+
+        // Restar del total
+        totalVenta -= subtotal;
+        document.getElementById("montoTotal").innerText = `S/ ${totalVenta.toFixed(2)}`;
+
+        // Si se quedó vacío, volver a poner el mensaje
+        const tbody = document.getElementById("tablaCarrito");
+        if(tbody.children.length === 0) {
+            tbody.innerHTML = `<tr id="filaVacia"><td colspan="5" class="text-center text-muted py-4">No hay productos agregados</td></tr>`;
+        }
+    }
+</script>
+</body>
+</html>

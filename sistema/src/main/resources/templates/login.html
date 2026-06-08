@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Gaspar Motors</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        /* Replicando el fondo azul oscuro de tu imagen */
+        body {
+            background: linear-gradient(135deg, #103b8c, #1a5cce);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        /* La tarjeta blanca central */
+        .login-card {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            width: 100%;
+            max-width: 380px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        /* El logo redondo de GM */
+        .logo-circle {
+            width: 65px;
+            height: 65px;
+            background-color: #1d4ed8;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin: 0 auto 15px auto;
+        }
+        /* Botón azul exacto al de tu diseño */
+        .btn-custom {
+            background-color: #1d4ed8;
+            border: none;
+            color: white;
+            font-weight: 500;
+        }
+        .btn-custom:hover {
+            background-color: #1e3a8a;
+            color: white;
+        }
+        /* Textos y etiquetas */
+        .form-label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 5px;
+        }
+        .text-footer {
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-card text-center">
+    <!-- Logo y Títulos -->
+    <div class="logo-circle">GM</div>
+    <h3 class="fw-bold mb-1" style="color: #1f2937;">Gaspar Motors</h3>
+    <p class="text-muted mb-4" style="font-size: 0.85rem;">Sistema de Gestión de Ventas</p>
+
+    <!-- Mensaje de error si la contraseña falla -->
+    <div th:if="${error}" class="alert alert-danger py-2 mb-3" style="font-size: 0.85rem;">
+        Credenciales incorrectas. Intente de nuevo.
+    </div>
+
+    <!-- Formulario -->
+    <form action="/login-post" method="post" class="text-start">
+        <div class="mb-3">
+            <label class="form-label">Ingresar DNI o Nombre de Usuario</label>
+            <input type="text" name="username" class="form-control" placeholder="DNI o nombre de usuario" required>
+        </div>
+        <div class="mb-4">
+            <label class="form-label">Contraseña</label>
+            <input type="password" name="password" class="form-control" placeholder="Ingrese su contraseña" required>
+        </div>
+        <button type="submit" class="btn btn-custom w-100 py-2 rounded-3">
+            <i class="fa-solid fa-arrow-right-to-bracket"></i> Entrar al Sistema
+        </button>
+    </form>
+
+    <!-- Footer con usuarios de prueba -->
+    <div class="mt-4 pt-3 border-top text-footer">
+        <p class="mb-1">Usuarios de prueba:</p>
+        <p class="mb-0">Admin: 12345678 / admin123</p>
+        <p class="mb-0">Vendedor: 87654321 / carlos123</p>
+    </div>
+</div>
+
+</body>
+</html>

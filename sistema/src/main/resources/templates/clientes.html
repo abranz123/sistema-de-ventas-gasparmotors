@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clientes | Gaspar Motors</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        body { background-color: #f3f4f6; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; display: flex; }
+        .sidebar { width: 260px; background-color: #1e3a8a; height: 100vh; position: fixed; display: flex; flex-direction: column; color: white; box-shadow: 4px 0 10px rgba(0,0,0,0.1); }
+        .sidebar-brand { padding: 20px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .logo-gm { background: white; color: #1e3a8a; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 18px; }
+        .nav-menu { padding: 20px 0; display: flex; flex-direction: column; gap: 5px; }
+        .nav-link { color: rgba(255,255,255,0.8); padding: 12px 24px; margin: 0 15px; border-radius: 8px; display: flex; align-items: center; gap: 15px; font-weight: 500; text-decoration: none; transition: 0.3s; }
+        .nav-link:hover, .nav-link.active { background-color: white; color: #1e3a8a; font-weight: 600; }
+        .user-panel { margin-top: auto; padding: 20px; background-color: #1e40af; }
+        .btn-logout { background-color: #dc2626; color: white; width: 100%; border: none; padding: 10px; border-radius: 8px; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 10px; }
+
+        .main-content { margin-left: 260px; padding: 30px; width: calc(100% - 260px); }
+        .card-panel { background: white; border-radius: 12px; padding: 25px; border: none; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+
+        .search-container { position: relative; margin-bottom: 20px; }
+        .search-container i { position: absolute; left: 15px; top: 12px; color: #9ca3af; }
+        .search-input { padding-left: 45px; height: 42px; border-radius: 8px; border: 1px solid #d1d5db; }
+
+        .table-custom th { background-color: #f9fafb; color: #4b5563; font-weight: 600; text-transform: uppercase; font-size: 0.75rem; padding: 15px; border-bottom: 1px solid #e5e7eb; }
+        .table-custom td { padding: 15px; vertical-align: middle; color: #1f2937; border-bottom: 1px solid #f3f4f6; font-size: 0.9rem; }
+        .btn-action { background: none; border: none; font-size: 1.1rem; padding: 4px 8px; transition: 0.2s; }
+        .btn-edit { color: #3b82f6; } .btn-delete { color: #ef4444; }
+    </style>
+</head>
+<body>
+<div class="sidebar">
+    <div class="sidebar-brand">
+        <div class="logo-gm">GM</div>
+        <div>
+            <div class="fw-bold" style="font-size: 1.1rem;">Gaspar Motors</div>
+            <div style="font-size: 0.75rem; color: rgba(255,255,255,0.7);">Sistema de Ventas</div>
+        </div>
+    </div>
+    <div class="nav-menu">
+        <a href="/inicio" class="nav-link"><i class="fa-solid fa-house"></i> Inicio</a>
+        <a href="/ventas/nueva" class="nav-link"><i class="fa-solid fa-cart-shopping"></i> Nueva Venta</a>
+        <a href="/inventario" class="nav-link"><i class="fa-solid fa-box-open"></i> Inventario</a>
+        <a href="/clientes" class="nav-link active"><i class="fa-solid fa-users"></i> Clientes</a>
+        <a href="/personal" class="nav-link"><i class="fa-solid fa-user-tie"></i> Personal</a>
+        <a href="/clientes/nuevo" class="btn btn-primary px-4 py-2 rounded-3 fw-medium text-decoration-none">
+            <i class="fa-solid fa-plus me-2"></i> Nuevo Cliente </a>
+    </div>
+    <div class="user-panel">
+        <div class="d-flex align-items-center gap-2 mb-3">
+            <i class="fa-solid fa-circle-user fs-3 text-white"></i>
+            <div>
+                <div class="fw-bold fs-6">Juan Gaspar</div>
+                <div style="font-size: 0.75rem; color: rgba(255,255,255,0.7);">Rol: Administrador</div>
+            </div>
+        </div>
+        <a href="/login" class="btn-logout text-decoration-none"><i class="fa-solid fa-arrow-right-from-bracket"></i> Cerrar Sesión</a>
+    </div>
+</div>
+
+<div class="main-content">
+    <div class="card-panel">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h4 class="fw-bold text-dark mb-0"><i class="fa-solid fa-users text-primary me-2"></i> Gestión de Clientes</h4>
+            <a href="/clientes/nuevo" class="btn btn-primary px-4 py-2 rounded-3 fw-medium text-decoration-none">
+                <i class="fa-solid fa-plus me-2"></i> Nuevo Cliente
+            </a>
+        </div>
+        <div class="search-container">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" class="form-control search-input w-100" placeholder="Buscar por DNI, nombre o apellido...">
+        </div>
+        <div class="table-responsive">
+            <table class="table table-custom mb-0">
+                <thead>
+                <tr>
+                    <th>DNI</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Teléfono</th>
+                    <th>Dirección</th>
+                    <th class="text-center">Acciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="c : ${clientes}">
+                    <td class="fw-medium" th:text="${c.dni}"></td>
+                    <td th:text="${c.nombre}"></td>
+                    <td th:text="${c.apellido}"></td>
+                    <td th:text="${c.telefono}"></td>
+                    <td th:text="${c.direccion}"></td>
+                    <td class="text-center">
+                    <td class="text-center">
+                        <a th:href="@{/clientes/editar/{id}(id=${c.id_cliente})}" class="btn-action btn-edit text-decoration-none">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </a>
+                        <a th:href="@{/clientes/eliminar/{id}(id=${c.id_cliente})}" class="btn-action btn-delete text-decoration-none" onclick="return confirm('¿Estás seguro de eliminar este cliente?');">
+                            <i class="fa-solid fa-trash"></i>
+                        </a>
+                    </td>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(clientes)}">
+                    <td colspan="6" class="text-center py-4 text-muted">No hay clientes registrados en la base de datos.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>
